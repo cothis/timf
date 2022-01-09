@@ -23,6 +23,9 @@ public class Voc {
 	@JoinColumn(name = "penalty_id")
 	private Penalty penalty;
 
+	@OneToOne(mappedBy = "voc", fetch = FetchType.LAZY)
+	private Compensation compensation;
+
 	public void registerPenalty(Penalty penalty) {
 		this.penalty = penalty;
 	}
