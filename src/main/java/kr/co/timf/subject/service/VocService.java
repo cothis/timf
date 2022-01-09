@@ -12,6 +12,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class VocService {
+
 	private final VocRepository vocRepository;
 
 	/**
