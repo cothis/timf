@@ -20,6 +20,7 @@ public class CompensationService {
 	/**
 	 * 배상정보 등록
 	 */
+	@Transactional
 	public void registerCompensation(Long vocId, Compensation compensation) {
 		Voc voc = vocService.findOne(vocId);
 		compensation.registerVoc(voc);
