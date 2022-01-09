@@ -50,4 +50,14 @@ public class VocService {
 		Voc voc = findOne(vocId);
 		voc.registerPenalty(penalty);
 	}
+
+	/**
+	 * 패널티 확인 여부 등록
+	 */
+	@Transactional
+	public void registerPenaltyConfirm(Long vocId, boolean confirm) {
+		Voc voc = findOne(vocId);
+		voc.getPenalty()
+				.confirm(confirm);
+	}
 }

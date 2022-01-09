@@ -4,7 +4,6 @@ import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
 import kr.co.timf.subject.domain.enumeration.Party;
 import kr.co.timf.subject.repository.VocRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +38,15 @@ class VocServiceTest {
 		return Voc.builder()
 				.party(Party.SELLER)
 				.content(content)
+				.build();
+	}
+
+	private Penalty generatePenalty(String content) {
+		return Penalty.builder()
+				.amount(new BigDecimal(1000))
+				.confirmed(false)
+				.content("test penalty")
+				.objected(false)
 				.build();
 	}
 
@@ -99,12 +107,7 @@ class VocServiceTest {
 		Voc voc = generateVoc("test voc");
 		vocService.registerVoc(voc);
 
-		Penalty penalty = Penalty.builder()
-				.amount(new BigDecimal(1000))
-				.confirmed(false)
-				.content("test penalty")
-				.objected(false)
-				.build();
+		Penalty penalty = generatePenalty("test penalty");
 
 		// when
 		vocService.registerPenalty(voc.getId(), penalty);
@@ -112,5 +115,23 @@ class VocServiceTest {
 		// then
 		Voc findVoc = vocService.findOne(voc.getId());
 		assertEquals(findVoc.getPenalty(), penalty);
+	}
+
+	@Test
+	@DisplayName("패널티 확인 여부 등록")
+	public void registerPenaltyConfirm() throws Exception {
+		// given
+		Voc voc = generateVoc("test voc");
+		vocService.registerVoc(voc);
+
+		Penalty penalty = generatePenalty("test penalty");
+		vocService.registerPenalty(voc.getId(), penalty);
+
+		// when
+		vocService.registerPenaltyConfirm(voc.getId(), true);
+
+		// then
+		Voc findVoc = vocService.findOne(voc.getId());
+		assertTrue(findVoc.getPenalty().getConfirmed());
 	}
 }

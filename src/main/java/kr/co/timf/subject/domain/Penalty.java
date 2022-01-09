@@ -23,4 +23,8 @@ public class Penalty {
 	private String content;
 	private Boolean confirmed;
 	private Boolean objected;
+
+	public void confirm(boolean confirm) {
+		this.confirmed = confirm;
+	}
 }
