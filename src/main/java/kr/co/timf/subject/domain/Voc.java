@@ -1,9 +1,7 @@
 package kr.co.timf.subject.domain;
 
 import kr.co.timf.subject.domain.enumeration.Party;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @SequenceGenerator(name = "voc_seq_generator", sequenceName = "voc_seq")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Voc {
 	@Id
 	@GeneratedValue(generator = "voc_seq_generator", strategy = GenerationType.IDENTITY)
