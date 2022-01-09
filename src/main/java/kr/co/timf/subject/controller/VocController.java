@@ -1,6 +1,6 @@
 package kr.co.timf.subject.controller;
 
-import kr.co.timf.subject.controller.dto.VocDto;
+import kr.co.timf.subject.controller.dto.VocDetailDto;
 import kr.co.timf.subject.domain.Voc;
 import kr.co.timf.subject.service.VocService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,10 @@ public class VocController {
 	private final VocService vocService;
 
 	@GetMapping
-	public List<VocDto> findAllVoc() {
-		System.out.println("VocController.findAllVoc");
-		List<Voc> vocList = vocService.findAll();
-		return vocList.stream()
-				.map(VocDto::new)
+	public List<VocDetailDto> findAllVoc() {
+		List<Voc> vocs = vocService.findAll();
+		return vocs.stream()
+				.map(VocDetailDto::new)
 				.collect(Collectors.toList());
 	}
 }
