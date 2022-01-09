@@ -1,5 +1,6 @@
 package kr.co.timf.subject.service;
 
+import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
 import kr.co.timf.subject.domain.enumeration.Party;
 import kr.co.timf.subject.repository.VocRepository;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,14 +35,18 @@ class VocServiceTest {
 	@Autowired
 	VocRepository vocRepository;
 
+	private Voc generateVoc(String content) {
+		return Voc.builder()
+				.party(Party.SELLER)
+				.content(content)
+				.build();
+	}
+
 	@Test
 	@DisplayName("VOC 등록 테스트")
 	public void registerVoc() throws Exception {
 		// given
-		Voc voc = Voc.builder()
-				.party(Party.SELLER)
-				.content("test voc")
-				.build();
+		Voc voc = generateVoc("test voc");
 
 		// when
 		vocService.registerVoc(voc);
@@ -60,18 +66,9 @@ class VocServiceTest {
 	public void getVocs() throws Exception {
 		// given
 		List<Voc> vocList = new ArrayList<>();
-		vocList.add(Voc.builder()
-				.party(Party.SELLER)
-				.content("test voc1")
-				.build());
-		vocList.add(Voc.builder()
-				.party(Party.SELLER)
-				.content("test voc2")
-				.build());
-		vocList.add(Voc.builder()
-				.party(Party.SELLER)
-				.content("test voc3")
-				.build());
+		vocList.add(generateVoc("test voc1"));
+		vocList.add(generateVoc("test voc2"));
+		vocList.add(generateVoc("test voc3"));
 		for (Voc voc : vocList) {
 			vocService.registerVoc(voc);
 		}
@@ -93,5 +90,27 @@ class VocServiceTest {
 
 		// then
 		assertThrows(IllegalStateException.class, () -> vocService.findOne(id), "해당 하는 Voc " + id + "를 찾을 수 없습니다.");
+	}
+
+	@Test
+	@DisplayName("패널티 등록")
+	public void registerPenalty() throws Exception {
+		// given
+		Voc voc = generateVoc("test voc");
+		vocService.registerVoc(voc);
+
+		Penalty penalty = Penalty.builder()
+				.amount(new BigDecimal(1000))
+				.confirmed(false)
+				.content("test penalty")
+				.objected(false)
+				.build();
+
+		// when
+		vocService.registerPenalty(voc.getId(), penalty);
+
+		// then
+		Voc findVoc = vocService.findOne(voc.getId());
+		assertEquals(findVoc.getPenalty(), penalty);
 	}
 }

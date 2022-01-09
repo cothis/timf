@@ -1,8 +1,6 @@
 package kr.co.timf.subject.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -15,6 +13,8 @@ import java.math.BigDecimal;
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Penalty {
 	@Id
 	@GeneratedValue(generator = "penalty_seq_generator", strategy = GenerationType.IDENTITY)

@@ -1,6 +1,8 @@
 package kr.co.timf.subject.service;
 
+import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
+import kr.co.timf.subject.repository.PenaltyRepository;
 import kr.co.timf.subject.repository.VocRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 public class VocService {
 
 	private final VocRepository vocRepository;
+	private final PenaltyRepository penaltyRepository;
 
 	/**
 	 * VOC 등록
@@ -36,5 +39,15 @@ public class VocService {
 	public Voc findOne(Long vocId) {
 		return vocRepository.findOne(vocId)
 				.orElseThrow(() -> new IllegalStateException("해당 하는 Voc " + vocId + "를 찾을 수 없습니다."));
+	}
+
+	/**
+	 * 패널티 등록
+	 */
+	@Transactional
+	public void registerPenalty(Long vocId, Penalty penalty) {
+		penaltyRepository.save(penalty);
+		Voc voc = findOne(vocId);
+		voc.registerPenalty(penalty);
 	}
 }

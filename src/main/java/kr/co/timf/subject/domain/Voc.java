@@ -22,4 +22,8 @@ public class Voc {
 	@OneToOne
 	@JoinColumn(name = "penalty_id")
 	private Penalty penalty;
+
+	public void registerPenalty(Penalty penalty) {
+		this.penalty = penalty;
+	}
 }
