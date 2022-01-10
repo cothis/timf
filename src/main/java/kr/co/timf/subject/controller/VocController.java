@@ -1,9 +1,6 @@
 package kr.co.timf.subject.controller;
 
-import kr.co.timf.subject.controller.dto.CreatePenaltyDto;
-import kr.co.timf.subject.controller.dto.CreateVocDto;
-import kr.co.timf.subject.controller.dto.ResultDto;
-import kr.co.timf.subject.controller.dto.VocDetailDto;
+import kr.co.timf.subject.controller.dto.*;
 import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
 import kr.co.timf.subject.service.VocReadService;
@@ -67,5 +64,13 @@ public class VocController {
 	public ResponseEntity<VocDetailDto> findOneVoc(@PathVariable("id") Long vocId) {
 		Voc voc = vocReadService.findOne(vocId);
 		return ResponseEntity.ok(new VocDetailDto(voc));
+	}
+
+	@PatchMapping("/{id}")
+	public ResponseEntity<ResultDto> updateVoc(@RequestBody @Valid UpdateVocDto vocDto, @PathVariable("id") Long vocId) {
+		System.out.println("vocDto.isConfirm() = " + vocDto.isConfirm());
+
+		vocService.registerPenaltyConfirm(vocId, vocDto.isConfirm());
+		return ResponseEntity.ok(new ResultDto(true));
 	}
 }

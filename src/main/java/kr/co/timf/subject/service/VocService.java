@@ -61,7 +61,9 @@ public class VocService {
 	@Transactional
 	public void registerPenaltyConfirm(Long vocId, boolean confirm) {
 		Voc voc = vocReadService.findOne(vocId);
-		voc.getPenalty()
-				.confirm(confirm);
+		if (voc.getPenalty() == null) {
+			throw new IllegalStateException("penalty가 등록되지 않았습니다");
+		}
+		voc.getPenalty().confirm(confirm);
 	}
 }
