@@ -15,48 +15,54 @@ create sequence compensation_seq increment by 50;
 create sequence penalty_seq increment by 50;
 create sequence voc_seq increment by 50;
 
-create table company (
-                         dtype varchar(31) not null,
-                         id bigint not null,
-                         name varchar(255),
-                         primary key (id)
+create table company
+(
+    dtype varchar(31) not null,
+    id    bigint      not null,
+    name  varchar(255),
+    primary key (id)
 );
 
-create table compensation (
-                              id bigint not null,
-                              amount decimal(19,2),
-                              voc_id bigint,
-                              primary key (id)
+create table compensation
+(
+    id     bigint not null,
+    amount decimal(19, 2),
+    voc_id bigint,
+    primary key (id)
 );
 
-create table penalty (
-                         id bigint not null,
-                         amount decimal(19,2),
-                         confirmed boolean,
-                         content varchar(255),
-                         objected boolean,
-                         primary key (id)
+create table penalty
+(
+    id        bigint not null,
+    amount    decimal(19, 2),
+    confirmed boolean,
+    content   varchar(255),
+    objected  boolean,
+    primary key (id)
 );
 
-create table seller (
-                        manager_name varchar(255),
-                        manager_phone varchar(255),
-                        id bigint not null,
-                        primary key (id)
+create table seller
+(
+    manager_name  varchar(255),
+    manager_phone varchar(255),
+    id            bigint not null,
+    primary key (id)
 );
 
-create table shipping (
-                          driver varchar(255),
-                          id bigint not null,
-                          primary key (id)
+create table shipping
+(
+    driver varchar(255),
+    id     bigint not null,
+    primary key (id)
 );
 
-create table voc (
-                     id bigint not null,
-                     content varchar(255),
-                     party varchar(255),
-                     penalty_id bigint,
-                     primary key (id)
+create table voc
+(
+    id         bigint not null,
+    content    varchar(255),
+    party      varchar(255),
+    penalty_id bigint,
+    primary key (id)
 );
 
 alter table compensation
@@ -79,5 +85,9 @@ alter table voc
         foreign key (penalty_id)
             references penalty;
 
+create index confirmed_index
+on penalty (confirmed);
+create index objected_index
+on penalty (objected);
 
 

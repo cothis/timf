@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 @Entity
 @SequenceGenerator(name = "penalty_seq_generator", sequenceName = "penalty_seq")
 @Table(indexes = {
-		@Index(name = "confirmedIndex", columnList = "confirmed"),
-		@Index(name = "objectedIndex", columnList = "objected")
+		@Index(name = "confirmed_index", columnList = "confirmed"),
+		@Index(name = "objected_index", columnList = "objected")
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
