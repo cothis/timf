@@ -1,5 +1,13 @@
 # 팀프레시 온라인 사전 과제
 
+- [Database ERD](docs/DB%20ERD.png)
+- [application diagram](docs/images/application.png)
+- [voc diagram](docs/images/voc.png)
+- [compensation diagram](docs/images/compensation.png)
+
+
+---
+
 ## 프로그램 실행 방법
 1. gradle로 프로젝트를 엽니다.
 2. SubjectApplication 을 실행합니다.
