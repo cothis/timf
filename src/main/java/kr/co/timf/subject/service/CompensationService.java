@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompensationService {
 
-	private final VocService vocService;
+	private final VocReadService vocReadService;
 	private final CompensationRepository compensationRepository;
 
 	/**
@@ -22,7 +22,7 @@ public class CompensationService {
 	 */
 	@Transactional
 	public void registerCompensation(Long vocId, Compensation compensation) {
-		Voc voc = vocService.findOne(vocId);
+		Voc voc = vocReadService.findOne(vocId);
 		compensation.registerVoc(voc);
 		compensationRepository.save(compensation);
 	}

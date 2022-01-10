@@ -1,7 +1,9 @@
 package kr.co.timf.subject.service;
 
+import kr.co.timf.subject.domain.Compensation;
 import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
+import kr.co.timf.subject.domain.enumeration.Party;
 import kr.co.timf.subject.repository.PenaltyRepository;
 import kr.co.timf.subject.repository.VocRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ public class VocService {
 
 	private final VocRepository vocRepository;
 	private final PenaltyRepository penaltyRepository;
+	private final VocReadService vocReadService;
+	private final CompensationService compensationService;
 
 	/**
 	 * VOC 등록
@@ -24,6 +28,10 @@ public class VocService {
 	@Transactional
 	public void registerVoc(Voc voc) {
 		vocRepository.save(voc);
+		// 고객사의 귀책은 바로 배상시스템에 등록
+		if (voc.getParty() == Party.SELLER) {
+			compensationService.registerCompensation(voc.getId(), Compensation.builder().build());
+		}
 	}
 
 	/**
@@ -33,13 +41,6 @@ public class VocService {
 		return vocRepository.findAll();
 	}
 
-	/**
-	 * VOC 1개 조회
-	 */
-	public Voc findOne(Long vocId) {
-		return vocRepository.findOne(vocId)
-				.orElseThrow(() -> new IllegalStateException("해당 하는 Voc " + vocId + "를 찾을 수 없습니다."));
-	}
 
 	/**
 	 * 패널티 등록
@@ -47,7 +48,7 @@ public class VocService {
 	@Transactional
 	public void registerPenalty(Long vocId, Penalty penalty) {
 		penaltyRepository.save(penalty);
-		Voc voc = findOne(vocId);
+		Voc voc = vocReadService.findOne(vocId);
 		voc.registerPenalty(penalty);
 	}
 
@@ -56,7 +57,7 @@ public class VocService {
 	 */
 	@Transactional
 	public void registerPenaltyConfirm(Long vocId, boolean confirm) {
-		Voc voc = findOne(vocId);
+		Voc voc = vocReadService.findOne(vocId);
 		voc.getPenalty()
 				.confirm(confirm);
 	}

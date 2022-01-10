@@ -32,6 +32,9 @@ class VocServiceTest {
 	VocService vocService;
 
 	@Autowired
+	VocReadService vocReadService;
+
+	@Autowired
 	VocRepository vocRepository;
 
 	private Voc generateVoc(String content) {
@@ -97,7 +100,7 @@ class VocServiceTest {
 		// when
 
 		// then
-		assertThrows(IllegalStateException.class, () -> vocService.findOne(id), "해당 하는 Voc " + id + "를 찾을 수 없습니다.");
+		assertThrows(IllegalStateException.class, () -> vocReadService.findOne(id), "해당 하는 Voc " + id + "를 찾을 수 없습니다.");
 	}
 
 	@Test
@@ -113,7 +116,7 @@ class VocServiceTest {
 		vocService.registerPenalty(voc.getId(), penalty);
 
 		// then
-		Voc findVoc = vocService.findOne(voc.getId());
+		Voc findVoc = vocReadService.findOne(voc.getId());
 		assertEquals(findVoc.getPenalty(), penalty);
 	}
 
@@ -131,7 +134,7 @@ class VocServiceTest {
 		vocService.registerPenaltyConfirm(voc.getId(), true);
 
 		// then
-		Voc findVoc = vocService.findOne(voc.getId());
+		Voc findVoc = vocReadService.findOne(voc.getId());
 		assertTrue(findVoc.getPenalty().getConfirmed());
 	}
 }
