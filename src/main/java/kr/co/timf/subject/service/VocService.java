@@ -47,8 +47,11 @@ public class VocService {
 	 */
 	@Transactional
 	public void registerPenalty(Long vocId, Penalty penalty) {
-		penaltyRepository.save(penalty);
 		Voc voc = vocReadService.findOne(vocId);
+		if (voc.getPenalty() != null) {
+			throw new IllegalStateException("이미 패널티가 존재합니다.");
+		}
+		penaltyRepository.save(penalty);
 		voc.registerPenalty(penalty);
 	}
 
