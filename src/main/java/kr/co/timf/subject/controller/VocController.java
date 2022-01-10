@@ -6,6 +6,7 @@ import kr.co.timf.subject.controller.dto.ResultDto;
 import kr.co.timf.subject.controller.dto.VocDetailDto;
 import kr.co.timf.subject.domain.Penalty;
 import kr.co.timf.subject.domain.Voc;
+import kr.co.timf.subject.service.VocReadService;
 import kr.co.timf.subject.service.VocService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class VocController {
 
 	private final VocService vocService;
+	private final VocReadService vocReadService;
 
 	@GetMapping
 	public List<VocDetailDto> findAllVoc() {
@@ -59,5 +61,11 @@ public class VocController {
 		vocService.registerPenalty(vocId, penalty);
 		return ResponseEntity.created(new URI("/api/vocs/" + vocId + "/penalties/" + penalty.getId()))
 				.body(new ResultDto(true));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<VocDetailDto> findOneVoc(@PathVariable("id") Long vocId) {
+		Voc voc = vocReadService.findOne(vocId);
+		return ResponseEntity.ok(new VocDetailDto(voc));
 	}
 }
