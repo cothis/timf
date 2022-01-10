@@ -37,9 +37,9 @@ class VocServiceTest {
 	@Autowired
 	VocRepository vocRepository;
 
-	private Voc generateVoc(String content) {
+	private Voc generateVoc(Party party, String content) {
 		return Voc.builder()
-				.party(Party.SELLER)
+				.party(party)
 				.content(content)
 				.build();
 	}
@@ -57,7 +57,7 @@ class VocServiceTest {
 	@DisplayName("VOC 등록 테스트")
 	public void registerVoc() throws Exception {
 		// given
-		Voc voc = generateVoc("test voc");
+		Voc voc = generateVoc(Party.SELLER, "test voc");
 
 		// when
 		vocService.registerVoc(voc);
@@ -77,9 +77,9 @@ class VocServiceTest {
 	public void getVocs() throws Exception {
 		// given
 		List<Voc> vocList = new ArrayList<>();
-		vocList.add(generateVoc("test voc1"));
-		vocList.add(generateVoc("test voc2"));
-		vocList.add(generateVoc("test voc3"));
+		vocList.add(generateVoc(Party.SELLER, "test voc1"));
+		vocList.add(generateVoc(Party.SELLER, "test voc2"));
+		vocList.add(generateVoc(Party.SELLER, "test voc3"));
 		for (Voc voc : vocList) {
 			vocService.registerVoc(voc);
 		}
@@ -107,7 +107,7 @@ class VocServiceTest {
 	@DisplayName("패널티 등록")
 	public void registerPenalty() throws Exception {
 		// given
-		Voc voc = generateVoc("test voc");
+		Voc voc = generateVoc(Party.SELLER, "test voc");
 		vocService.registerVoc(voc);
 
 		Penalty penalty = generatePenalty("test penalty");
@@ -124,7 +124,7 @@ class VocServiceTest {
 	@DisplayName("패널티 확인 여부 등록")
 	public void registerPenaltyConfirm() throws Exception {
 		// given
-		Voc voc = generateVoc("test voc");
+		Voc voc = generateVoc(Party.SELLER, "test voc");
 		vocService.registerVoc(voc);
 
 		Penalty penalty = generatePenalty("test penalty");
@@ -136,5 +136,31 @@ class VocServiceTest {
 		// then
 		Voc findVoc = vocReadService.findOne(voc.getId());
 		assertTrue(findVoc.getPenalty().getConfirmed());
+	}
+
+	@Test
+	@DisplayName("고객사 귀책은 바로 배상시스템에 등록합니다")
+	public void registerSellerVoc() {
+		// given
+		Voc voc = generateVoc(Party.SELLER, "test voc");
+
+		// when
+		vocService.registerVoc(voc);
+
+		// then
+		assertNotNull(voc.getCompensation(), "배상시스템에 바로 등록됩니다.");
+	}
+
+	@Test
+	@DisplayName("운송사 귀책은 바로 등록되지 않습니다")
+	public void registerShippingVoc() {
+		// given
+		Voc voc = generateVoc(Party.SHIPPING, "test voc");
+
+		// when
+		vocService.registerVoc(voc);
+
+		// then
+		assertNull(voc.getCompensation(), "배상시스템은 null 이어야 합니다.");
 	}
 }

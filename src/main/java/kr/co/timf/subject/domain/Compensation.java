@@ -22,5 +22,6 @@ public class Compensation {
 
 	public void registerVoc(Voc voc) {
 		this.voc = voc;
+		voc.registerCompensation(this);
 	}
 }

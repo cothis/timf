@@ -29,4 +29,8 @@ public class Voc {
 	public void registerPenalty(Penalty penalty) {
 		this.penalty = penalty;
 	}
+
+	public void registerCompensation(Compensation compensation) {
+		this.compensation = compensation;
+	}
 }
