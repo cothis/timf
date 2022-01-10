@@ -41,6 +41,7 @@ insert into shipping (ID, DRIVER)
 values (COMPANY_SEQ.currval, 'driver4');
 
 alter sequence COMPANY_SEQ increment by 50;
+select COMPANY_SEQ.nextval from dual;
 
 alter sequence VOC_SEQ increment by 1;
 alter sequence COMPENSATION_SEQ increment by 1;
@@ -73,4 +74,6 @@ VALUES (VOC_SEQ.nextval, 'test voc5', 'SHIPPING', null),
        (VOC_SEQ.nextval, 'test voc8', 'SHIPPING', null);
 
 alter sequence COMPENSATION_SEQ increment by 50;
+select COMPENSATION_SEQ.nextval from dual;
 alter sequence VOC_SEQ increment by 50;
+select VOC_SEQ.nextval from dual;
