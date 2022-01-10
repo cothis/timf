@@ -1,5 +1,6 @@
 package kr.co.timf.subject.domain;
 
+import kr.co.timf.subject.domain.enumeration.Party;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,22 @@ public class Compensation {
 	private Voc voc;
 
 	public void registerVoc(Voc voc) {
+		checkPenaltyStatus(voc);
 		this.voc = voc;
 		voc.registerCompensation(this);
+	}
+
+	private void checkPenaltyStatus(Voc voc) {
+		if (voc.getParty() == Party.SHIPPING) {
+			if (voc.getPenalty() == null) {
+				throw new IllegalStateException("penalty를 먼저 등록해야 합니다");
+			}
+			if (!voc.getPenalty().getConfirmed()) {
+				throw new IllegalStateException("아직 기사님의 패널티 확인이 완료되지 않았습니다");
+			}
+			if (voc.getPenalty().getObjected()) {
+				throw new IllegalStateException("기사님이 이의제기를 한 상황입니다.");
+			}
+		}
 	}
 }
