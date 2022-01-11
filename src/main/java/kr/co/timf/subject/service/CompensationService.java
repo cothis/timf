@@ -2,7 +2,6 @@ package kr.co.timf.subject.service;
 
 import kr.co.timf.subject.domain.Compensation;
 import kr.co.timf.subject.domain.Voc;
-import kr.co.timf.subject.domain.enumeration.Party;
 import kr.co.timf.subject.repository.CompensationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,6 @@ public class CompensationService {
 	 * 배상 목록 조회
 	 */
 	public List<Compensation> findAll() {
-		return compensationRepository.findAll();
+		return compensationRepository.findAllCompensationAndVoc();
 	}
 }

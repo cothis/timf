@@ -38,7 +38,7 @@ public class VocService {
 	 * VOC 목록 조회
 	 */
 	public List<Voc> findAll() {
-		return vocRepository.findAll();
+		return vocRepository.findAllVocAndCompensation();
 	}
 
 

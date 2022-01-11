@@ -19,11 +19,11 @@ public class Voc {
 	private Party party;
 	private String content;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "penalty_id")
 	private Penalty penalty;
 
-	@OneToOne(mappedBy = "voc", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "voc")
 	private Compensation compensation;
 
 	public void registerPenalty(Penalty penalty) {

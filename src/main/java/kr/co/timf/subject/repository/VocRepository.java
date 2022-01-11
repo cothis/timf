@@ -17,8 +17,8 @@ public class VocRepository {
 		em.persist(voc);
 	}
 
-	public List<Voc> findAll() {
-		return em.createQuery("select v from Voc v", Voc.class)
+	public List<Voc> findAllVocAndCompensation() {
+		return em.createQuery("select v from Voc v join fetch v.compensation", Voc.class)
 				.getResultList();
 	}
 

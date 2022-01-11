@@ -17,8 +17,8 @@ public class CompensationRepository {
 		em.persist(compensation);
 	}
 
-	public List<Compensation> findAll() {
-		return em.createQuery("select c from Compensation c", Compensation.class)
+	public List<Compensation> findAllCompensationAndVoc() {
+		return em.createQuery("select c from Compensation c join fetch c.voc", Compensation.class)
 				.getResultList();
 	}
 }

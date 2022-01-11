@@ -17,7 +17,7 @@ public class Compensation {
 	@GeneratedValue(generator = "compensation_seq_generator", strategy = GenerationType.IDENTITY)
 	private Long id;
 	private BigDecimal amount;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "voc_id")
 	private Voc voc;
 
